@@ -1,0 +1,30 @@
+{
+  "project_info": {
+    "project_number": "298383141375",
+    "firebase_url": "https://medic-79a9e-default-rtdb.firebaseio.com",
+    "project_id": "medic-79a9e",
+    "storage_bucket": "medic-79a9e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:298383141375:android:73090968f4a00fa9fedfca",
+        "android_client_info": {
+          "package_name": "com.example.medic"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfbuNNQS4DWdR2-ISyAL1Uml1lGg5BLgo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
