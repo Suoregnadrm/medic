@@ -4,6 +4,7 @@ import 'package:medic/provider.dart';
 import 'package:medic/view_doctors.dart';
 import 'package:provider/provider.dart';
 import 'assessment.dart';
+import 'appointment.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -71,6 +72,17 @@ class _HomeState extends State<Home> {
                   );
                 },
                 child: Text('View Doctors'),
+              ),
+
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => ViewAppointmentHistory()),
+                  );
+                },
+                child: Text('Appointment History'),
               ),
               // Add advertisements here
             ],

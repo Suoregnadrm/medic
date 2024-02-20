@@ -325,7 +325,7 @@ Future<void> getDoctors(BuildContext context)async {
   }
 }
 
-Future<void> bookAppointment(BuildContext context, String doctorUid) async {
+Future<void> bookAppointment(BuildContext context, String doctorUid, String DocName, String FTime, String TTime) async {
   final userData = Provider.of<UserData>(context,listen:false);
   CollectionReference appointmentRef =  firestore.collection("doctors").doc(doctorUid).collection("appointments");
   final appUpdateRef =  firestore.collection("doctors").doc(doctorUid);
@@ -353,13 +353,17 @@ Future<void> bookAppointment(BuildContext context, String doctorUid) async {
     await firestore.collection("doctors").doc(doctorUid).update({
       'appointment' : appointments,
     });
+    await firestore.collection("users").doc(userData.uid).collection("appointments").doc().set({
+      'doctorName': DocName,
+      'From': FTime,
+      'To': TTime,
+    });
     snackBar("Booking Done", context);
   }
   catch(e){
     print(e);
   }
 }
-
 
 Future<void> getAppointments(BuildContext context)async {
   final appointmentsProvider = Provider.of<AppointmentsProvider>(context,listen:false);
@@ -388,3 +392,29 @@ Future<void> getAppointments(BuildContext context)async {
     appointmentsProvider.setAppointments([]);
   }
 }
+
+
+Future<List<AppointmentHistory>> fetchUserAppointments(String userId) async {
+  List<AppointmentHistory> userAppointments = [];
+
+  try {
+    // Reference to the user's appointments collection in Firestore
+    CollectionReference appointmentsRef = FirebaseFirestore.instance.collection('users').doc(userId).collection('appointments');
+
+    // Query for the user's appointments
+    QuerySnapshot querySnapshot = await appointmentsRef.get();
+
+    // Iterate through the documents and extract appointment data
+    querySnapshot.docs.forEach((doc) {
+      Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
+      AppointmentHistory appointment = AppointmentHistory.fromFirestore(data);
+      userAppointments.add(appointment);
+    });
+  } catch (e) {
+    // Handle any errors that occurred during fetching
+    print('Error fetching user appointments: $e');
+  }
+
+  return userAppointments;
+}
+

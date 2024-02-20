@@ -114,7 +114,7 @@ class Appointment{
   String gender;
   String email;
   String phoneNumber;
-  String uid ;
+  String uid;
 
   Appointment({
     required this.name,
@@ -122,8 +122,29 @@ class Appointment{
     required this.gender,
     required this.email,
     required this.phoneNumber,
-    required this.uid
+    required this.uid,
+
   });
+}
+
+class AppointmentHistory {
+  String doctorName;
+  String fromTime;
+  String toTime;
+
+  AppointmentHistory({
+    required this.doctorName,
+    required this.fromTime,
+    required this.toTime,
+  });
+
+  factory AppointmentHistory.fromFirestore(Map<String, dynamic> data) {
+    return AppointmentHistory(
+      doctorName: data['doctorName'],
+      fromTime: data['From'],
+      toTime: data['To'],
+    );
+  }
 }
 
 class AppointmentsProvider extends ChangeNotifier{
@@ -133,5 +154,5 @@ class AppointmentsProvider extends ChangeNotifier{
     appointments = value;
     notifyListeners();
   }
-
 }
+

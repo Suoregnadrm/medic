@@ -11,14 +11,6 @@ class DoctorProfilePage extends StatefulWidget {
 
 class _DoctorProfilePageState extends State<DoctorProfilePage> {
 
-
-
-  // final _appointments = [
-  //   {'name': 'Alice Smith', 'age': 28, 'gender': 'F', 'time': '10:00 AM'},
-  //   {'name': 'Bob Johnson', 'age': 42, 'gender': 'M', 'time': '11:30 AM'},
-  //   {'name': 'Charlie Brown', 'age': 30, 'gender': 'M', 'time': '2:00 PM'},
-  // ];
-
   String? _selectedAppointment;
 
   @override

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:medic/firebase_function.dart';
 import 'package:medic/provider.dart';
 import 'package:provider/provider.dart';
-import 'assessment.dart';
 
 class ViewDoctors extends StatefulWidget {
   const ViewDoctors({Key? key}) : super(key: key);
@@ -207,7 +206,7 @@ class _ViewDoctorsState extends State<ViewDoctors> {
                           setState(() {
                             _isLoading = true;
                           });
-                          await bookAppointment(context, doctors[index].uid);
+                          await bookAppointment(context, doctors[index].uid, doctors[index].name, doctors[index].fromTime, doctors[index].toTime);
                           setState(() {
                             _isLoading = false;
                           });
