@@ -1,3 +1,4 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 
 class UserData extends ChangeNotifier{
@@ -13,6 +14,18 @@ class UserData extends ChangeNotifier{
   int fees = 0;
   String fromTime = '';
   String toTime = "";
+  
+  String licence="";
+  late File licenceFile;
+
+  void setLicenceFile(File value){
+    licenceFile=value;
+    notifyListeners();
+  }
+  void setLicence(String value){
+    licence=value;
+    notifyListeners();
+  }
 
   void setFromTime(String value){
     fromTime = value;
