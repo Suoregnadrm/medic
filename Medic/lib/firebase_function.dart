@@ -418,3 +418,30 @@ Future<List<AppointmentHistory>> fetchUserAppointments(String userId) async {
   return userAppointments;
 }
 
+
+String getFileName(String filePath) {
+  return filePath.split('/').last;
+}
+Future<void> uploadLicence(BuildContext context) async {
+  final userData = Provider.of<UserData>(context,listen: false);
+
+  try {
+
+    final storageReference = FirebaseStorage.instance.ref().child('licence');
+    final fileName = getFileName(userData.licenceFile.path as String);
+
+    // Upload the file
+    await storageReference.child(fileName).putFile(userData.licenceFile! as File);
+
+    // Get download URL and update user data
+    final downloadURL = await storageReference.child(fileName).getDownloadURL();
+    userData.setLicence(downloadURL);
+
+    // Dismiss progress indicator and show success message
+    snackBar("Licence uploaded successfully!", context);
+  } catch (e) {
+    // Handle errors with specific messages
+    final message = e.toString();
+    snackBar(message, context);
+  }
+}
