@@ -380,6 +380,32 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           ),
                           readOnly: true,
                         ),
+                        SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: () async {
+                            FocusScope.of(context).unfocus();
+                            setState(() {
+                              _isLoading = true;
+                            });
+                            FilePickerResult? result = await FilePicker.platform.pickFiles(
+                              type: FileType.custom,
+                              allowedExtensions: ['pdf', 'png', 'jpeg','jpg'], // Specify the allowed file extensions
+                              allowMultiple: false, // Set to true if you want to allow picking multiple files
+                            );
+                            if(result!=null){
+                              userData.setLicenceFile(File(result.files.first.path as String));
+                              await uploadLicence(context);
+                            }
+                            else{
+                              snackBar("Please upload a file", context);
+                            }
+                            setState(() {
+                              _isLoading = false;
+                            });
+                          }, //_verifyPhoneNumber,
+                          child: Text('Upload Licence'),
+                        ),
+                        SizedBox(height: 16),
                       ],
                     ),
                   ),
