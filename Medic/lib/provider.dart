@@ -14,9 +14,15 @@ class UserData extends ChangeNotifier{
   int fees = 0;
   String fromTime = '';
   String toTime = "";
+  String status="";
   
   String licence="";
   late File licenceFile;
+
+  void setStatus(String value){
+    status=value;
+    notifyListeners();
+  }
 
   void setLicenceFile(File value){
     licenceFile=value;
