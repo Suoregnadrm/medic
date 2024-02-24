@@ -182,6 +182,7 @@ Future<void> storeSignup(BuildContext context) async {
       'appointments':0,
       'registered on': DateTime.now(),
       'license': userData.licence,
+      'status': "not verified",
     };
     try {
       await userRef.doc(userData.uid).set(data);
@@ -274,6 +275,8 @@ Future<void> doesUserExist(BuildContext context)async {
     userData.setFee(data['fees']);
     userData.setFromTime(data['from time']);
     userData.setToTime(data['to time']);
+    userData.setStatus(data['status']);
+
     await getAppointments(context);
     Navigator.pushAndRemoveUntil(
       context,
@@ -299,7 +302,7 @@ Future<void> getDoctors(BuildContext context)async {
     for(QueryDocumentSnapshot doc in docRef.docs){
       Map<String, dynamic> data = doc.data() as Map<String,dynamic> ;
       int appointments = data['appointments'];
-      if(appointments == 5){
+      if(appointments == 5 || data['status'] =="not verified"){
         continue;
       }
       String name = data['name'];
