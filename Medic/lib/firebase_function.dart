@@ -7,6 +7,7 @@ import 'package:medic/doctors_page.dart';
 import 'package:medic/provider.dart';
 import 'package:provider/provider.dart';
 import 'home.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 final FirebaseAuth _auth = FirebaseAuth.instance;
 FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -180,7 +181,7 @@ Future<void> storeSignup(BuildContext context) async {
       'to time': userData.toTime,
       'appointments':0,
       'registered on': DateTime.now(),
-      // Add more fields as needed
+      'license': userData.licence,
     };
     try {
       await userRef.doc(userData.uid).set(data);

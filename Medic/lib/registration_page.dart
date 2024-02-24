@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'firebase_function.dart';
 import 'home.dart';
+import 'package:file_picker/file_picker.dart';
+
 // import 'package:firebase_core/firebase_core.dart';
 // import 'package:firebase_auth/firebase_auth.dart';
 
@@ -419,7 +421,7 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       });
                       print(phoneNumberController.text);
                       await verifyPhoneNumber(context, "+91"+phoneNumberController.text);
-                      snackBar("Otp sent",context);
+                      snackBar("OTP sent",context);
                       setState(() {
                         _isLoading = false;
                       });
