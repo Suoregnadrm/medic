@@ -49,6 +49,7 @@ dependencies:
   loading_animation_widget: ^1.2.0+4
   file_picker: ^6.1.1
   firebase_storage: ^11.6.6
+  google_fonts: ^6.1.0
 
 dev_dependencies:
   flutter_test:
@@ -88,17 +89,33 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
-  #   - family: Trajan Pro
-  #     fonts:
-  #       - asset: fonts/TrajanPro.ttf
-  #       - asset: fonts/TrajanPro_Bold.ttf
-  #         weight: 700
+  fonts:
+    - family: ProtestRiot
+      fonts:
+        - asset: fonts/ProtestRiot-Regular.ttf
+          style: italic
+    - family: Ultra
+      fonts:
+        - asset: fonts/Ultra-Regular.ttf
+          style: italic
+    - family: AlfaSlabOne
+      fonts:
+        - asset: fonts/AlfaSlabOne-Regular.ttf
+          style: italic
+    - family: Playfair Display
+      fonts:
+        - asset: fonts/PlayfairDisplay-VariableFont_wght.ttf
+          style: italic
+    - family: Merriweather
+      fonts:
+        - asset: fonts/Merriweather-Regular.ttf
+        - asset: fonts/Merriweather-Italic.ttf
+          style: italic
+
+    - family: OldStandardTT
+      fonts:
+        - asset: fonts/OldStandardTT-Regular.ttf
+          style: italic
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/custom-fonts/#from-packages

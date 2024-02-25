@@ -46,11 +46,6 @@ class _VoiceRegistrationState extends State<VoiceRegistration> {
   bool isVerifying = false;
   int verificationAttempts = 0;
 
-  // TextEditingController nameController = TextEditingController();
-  // TextEditingController ageController = TextEditingController();
-  // TextEditingController emailController = TextEditingController();
-  // TextEditingController phoneNumberController = TextEditingController();
-  // TextEditingController otpController = TextEditingController();
   String verificationId = '';
 
   String name = "";
@@ -91,9 +86,6 @@ class _VoiceRegistrationState extends State<VoiceRegistration> {
             setState(() {
               inputController.text = result.recognizedWords;
             });
-
-            // Update variables based on user responses to specific questions
-            //_updateVariables(result.recognizedWords);
           },
           listenFor: Duration(seconds: 25),
           pauseFor: Duration(seconds: 5),
@@ -105,11 +97,9 @@ class _VoiceRegistrationState extends State<VoiceRegistration> {
             isListening = false;
           });
 
-          // Complete the listening completer to signal the end of listening
           _listeningCompleter.complete();
         });
 
-        // Wait for the user to complete their response before proceeding
         await _listeningCompleter.future;
       } else {
         print('Speech recognition not available');
@@ -119,29 +109,7 @@ class _VoiceRegistrationState extends State<VoiceRegistration> {
     }
   }
 
-  // void _updateVariables(String response) {
-  //   // Check for keywords in the response and update corresponding variables
-  //   if (currentQuestionIndex == 0) {
-  //     name = inputController.text.trim();
-  //     print('Name: $name');
-  //   }
-  //   if (currentQuestionIndex == 1) {
-  //     age = inputController.text.trim();
-  //     print('Age: $age');
-  //   }
-  //   if (currentQuestionIndex == 2) {
-  //     gender = inputController.text.trim();
-  //     print('Gender: $gender');
-  //   }
-  //   if (currentQuestionIndex == 3) {
-  //     phone = inputController.text.trim();
-  //     print('Phone Number: $phone');
-  //   }
-  // }
-
   void _handleUserResponse() async {
-    // Perform any additional logic or validations after the user has responded
-    // This is the place where you can use the collected variables (name, age, gender, phone)
     messages.add(ChatMessage(
       message: inputController.text.trim(),
       type: ChatMessageType.user,
@@ -149,22 +117,18 @@ class _VoiceRegistrationState extends State<VoiceRegistration> {
 
     if (currentQuestionIndex == 0) {
       name = inputController.text.trim();
-      print('Name: $name');
       inputController.clear();
     }
     if (currentQuestionIndex == 1) {
       age = inputController.text.trim();
-      print('Age: $age');
       inputController.clear();
     }
     if (currentQuestionIndex == 2) {
       gender = inputController.text.trim();
-      print('Gender: $gender');
       inputController.clear();
     }
     if (currentQuestionIndex == 3) {
       phone = inputController.text.trim();
-      print('Phone Number: $phone');
       inputController.clear();
       await verifyPhoneNumber(context, "+91"+phone);
       snackBar("Otp sent",context);
@@ -172,20 +136,16 @@ class _VoiceRegistrationState extends State<VoiceRegistration> {
     }
     if (currentQuestionIndex == 4) {
       otp = inputController.text.trim();
-      print('otp: $otp');
       inputController.clear();
     }
     if (currentQuestionIndex == 5) {
       otp = inputController.text.trim();
-      print('otp: $otp');
       inputController.clear();
     }
     if (currentQuestionIndex == 6) {
       otp = inputController.text.trim();
-      print('otp: $otp');
       inputController.clear();
     }
-    // Ask the next question or finish the conversation
     if (currentQuestionIndex < questions.length - 1) {
       currentQuestionIndex++;
       _addBotMessage(questions[currentQuestionIndex]);
@@ -224,78 +184,120 @@ class _VoiceRegistrationState extends State<VoiceRegistration> {
   Widget build(BuildContext context) {
     final userData = Provider.of<UserData>(context);
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Voice Registration'),
-      ),
-      body: Column(
+      backgroundColor: Colors.transparent,
+      body: Stack(
         children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: messages.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ChatMessageWidget(
-                    message: messages[index],
-                    speak: _speak,
-                  ),
-                );
-              },
+          // Background Image Container
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/bg_color.jpg'),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: inputController,
-                    decoration: const InputDecoration(
-                      hintText: 'Your response',
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 25, left: 25, top: 50),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                    color: Colors.blue,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.menu, color: Colors.white),
+                          onPressed: () {
+                            // Handle hamburger button press
+                          },
+                        ),
+                        Text(
+                          'Voice Registration',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontFamily: 'ProtestRiot',
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.settings, color: Colors.white),
+                          onPressed: () {
+                            // Handle settings button press
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                const SizedBox(width: 10),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    // Initiate listening only when not already listening
-                    if (!isListening) {
-                      _listen();
-                    }
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: messages.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ChatMessageWidget(
+                        message: messages[index],
+                        speak: _speak,
+                      ),
+                    );
                   },
-                  icon: Icon(
-                    isListening ? Icons.mic_off : Icons.mic,
-                    color: Colors.white,
-                  ),
-                  label: const Text(''),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.blue,
-                    elevation: 5,
-                  ),
                 ),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    print(isVerifying);
-                    _handleUserResponse();
-                    if(isVerifying){
-                      setState(() async {
-                        print("OTP is: "+otp);
-                        userData.setUserName(name);
-                        userData.setAge(age);
-                        userData.setGender(gender);
-                        //userData.setEmail(emailController.text);
-                        userData.setPhoneNumber(phone);
-                        userData.setType("Patient");
-                        //userData.setDoctorType(_doctorType!);
-                        await verifyOTPCodeForRegistration(context, userData.verfID, otp);
-                      });
-                    }
-                  },
-                  child: Text(isVerifying ? 'Verify OTP' : 'Send'),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: inputController,
+                        decoration: const InputDecoration(
+                          hintText: 'Your response',
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        if (!isListening) {
+                          _listen();
+                        }
+                      },
+                      icon: Icon(
+                        isListening ? Icons.mic_off : Icons.mic,
+                        color: Colors.white,
+                      ),
+                      label: const Text(''),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.blue,
+                        elevation: 5,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        _handleUserResponse();
+                        if(isVerifying){
+                          setState(() async {
+                            userData.setUserName(name);
+                            userData.setAge(age);
+                            userData.setGender(gender);
+                            userData.setPhoneNumber(phone);
+                            userData.setType("Patient");
+                            await verifyOTPCodeForRegistration(context, userData.verfID, otp);
+                          });
+                        }
+                      },
+                      child: Text(isVerifying ? 'Verify OTP' : 'Send'),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),
@@ -327,8 +329,8 @@ class ChatMessageWidget extends StatelessWidget {
         margin: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: message.type == ChatMessageType.user
-              ? Colors.blue
-              : Colors.green,
+              ? Colors.green.withOpacity(0.5) // Adjust the opacity as needed (from 0.0 to 1.0)
+              : Colors.purple.withOpacity(0.4),
           borderRadius: BorderRadius.circular(12),
         ),
         child: Column(
@@ -337,7 +339,7 @@ class ChatMessageWidget extends StatelessWidget {
             Text(
               message.message,
               style: TextStyle(
-                color: Colors.white,
+                color: Colors.black87,
               ),
             ),
             if (message.type == ChatMessageType.bot)
@@ -352,6 +354,7 @@ class ChatMessageWidget extends StatelessWidget {
       ),
     );
   }
+
 }
 void snackBar(String text,BuildContext context){
   ScaffoldMessenger.of(context).showSnackBar(

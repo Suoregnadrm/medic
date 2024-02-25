@@ -8,28 +8,6 @@ import 'firebase_function.dart';
 import 'home.dart';
 import 'package:file_picker/file_picker.dart';
 
-// import 'package:firebase_core/firebase_core.dart';
-// import 'package:firebase_auth/firebase_auth.dart';
-
-// void main() async {
-//   WidgetsFlutterBinding.ensureInitialized();
-//   //await Firebase.initializeApp();
-//   runApp(MyApp());
-// }
-
-// class MyApp extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'User Registration',
-//       theme: ThemeData(
-//         primarySwatch: Colors.blue,
-//       ),
-//       home: RegistrationPage(),
-//     );
-//   }
-// }
-
 class RegistrationPage extends StatefulWidget {
   @override
   _RegistrationPageState createState() => _RegistrationPageState();
@@ -42,7 +20,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController otpController = TextEditingController();
 
-  //FirebaseAuth _auth = FirebaseAuth.instance;
   String verificationId = '';
   int fees = 0;
   String? _selectedOption = "";
@@ -52,70 +29,84 @@ class _RegistrationPageState extends State<RegistrationPage> {
   String _toTime = "";
 
   bool _isLoading = false;
-  // Future<void> _verifyPhoneNumber() async {
-  //   try {
-  //     await _auth.verifyPhoneNumber(
-  //       phoneNumber: '+${phoneNumberController.text}',
-  //       verificationCompleted: (PhoneAuthCredential credential) async {
-  //         // Automatic verification if the user's device has SMS permissions
-  //         await _auth.signInWithCredential(credential);
-  //         print('Phone number automatically verified: ${credential.smsCode}');
-  //       },
-  //       verificationFailed: (FirebaseAuthException e) {
-  //         print('Phone number verification failed. Error: ${e.message}');
-  //       },
-  //       codeSent: (String verificationId, int? resendToken) {
-  //         setState(() {
-  //           this.verificationId = verificationId;
-  //         });
-  //       },
-  //       codeAutoRetrievalTimeout: (String verificationId) {
-  //         // Timeout callback
-  //       },
-  //       timeout: Duration(seconds: 60),
-  //     );
-  //   } catch (e) {
-  //     print('Error during phone number verification: $e');
-  //   }
-  // }
-
-  // Future<void> _verifyOtp() async {
-  //   try {
-  //     PhoneAuthCredential credential = PhoneAuthProvider.credential(
-  //       verificationId: verificationId,
-  //       smsCode: otpController.text,
-  //     );
-  //     await _auth.signInWithCredential(credential);
-  //     print('OTP Verified');
-  //   } catch (e) {
-  //     print('Error during OTP verification: $e');
-  //   }
-  // }
 
   @override
   Widget build(BuildContext context) {
     final userData = Provider.of<UserData>(context);
-    return Stack(
-      children: [
-        Scaffold(
-          appBar: AppBar(
-            title: Text('Registration'),
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Stack(
+        children: [
+          // Background Image Container
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/bg_color.jpg'), // Change path to your image
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
-          body: SingleChildScrollView(
+          SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.all(16.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  Padding(
+                    padding: const EdgeInsets.only(right: 25, left: 25, top: 50),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(15),
+                      child: Container(
+                        width: double.infinity,
+                        padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                        color: Colors.blue,
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            IconButton( // Hamburger button
+                              icon: Icon(Icons.menu, color: Colors.white),
+                              onPressed: () {
+                                // Handle hamburger button press
+                              },
+                            ),
+                            Text(
+                              'Registration',
+                              style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.white,
+                                fontFamily: 'ProtestRiot',
+                              ),
+                            ),
+                            IconButton( // Settings button
+                              icon: Icon(Icons.settings, color: Colors.white),
+                              onPressed: () {
+                                // Handle settings button press
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
                   TextFormField(
                     controller: nameController,
-                    decoration: InputDecoration(labelText: 'Name'),
+                    decoration: InputDecoration(
+                      labelText: 'Name',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
                   ),
+                  SizedBox(height: 16),
                   TextFormField(
                     controller: ageController,
                     decoration: InputDecoration(
                       labelText: 'Age',
                       counterText: "",
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
                     ),
                     keyboardType: TextInputType.number,
                     maxLength: 2,
@@ -124,13 +115,23 @@ class _RegistrationPageState extends State<RegistrationPage> {
                   TextFormField(
                     controller: emailController,
                     keyboardType: TextInputType.emailAddress,
-                    decoration: InputDecoration(labelText: 'Email'),
+                    decoration: InputDecoration(
+                      labelText: 'Email',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
                   ),
                   SizedBox(height: 16),
                   TextFormField(
                     controller: phoneNumberController,
                     keyboardType: TextInputType.phone,
-                    decoration: InputDecoration(labelText: 'Phone Number'),
+                    decoration: InputDecoration(
+                      labelText: 'Phone Number',
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
                   ),
                   SizedBox(height: 16),
                   TextField(
@@ -138,6 +139,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     decoration: InputDecoration(
                       labelText: 'Gender',
                       icon: const Icon(Icons.people),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
                       suffixIcon: PopupMenuButton<String>(
                         icon: const Icon(Icons.arrow_drop_down),
                         onSelected: (String newValue) {
@@ -166,6 +170,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     decoration: InputDecoration(
                       labelText: 'Role',
                       icon: const Icon(Icons.person),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
                       suffixIcon: PopupMenuButton<String>(
                         icon: const Icon(Icons.arrow_drop_down),
                         onSelected: (String newValue) {
@@ -188,7 +195,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     ),
                     readOnly: true, // Make the text field non-editable
                   ),
-
                   SizedBox(height: 16),
                   Visibility(
                     visible: _selectedOption == 'Doctor',
@@ -197,6 +203,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                       decoration: InputDecoration(
                         labelText: 'Specialization',
                         icon: const Icon(Icons.person),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
                         suffixIcon: PopupMenuButton<String>(
                           icon: const Icon(Icons.arrow_drop_down),
                           onSelected: (String newValue) {
@@ -223,7 +232,6 @@ class _RegistrationPageState extends State<RegistrationPage> {
                     child: Column(
                       children: [
                         SizedBox(height: 16),
-
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
@@ -247,6 +255,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           decoration: InputDecoration(
                             labelText: 'From Time',
                             icon: const Icon(Icons.watch_later_outlined),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
                             suffixIcon: PopupMenuButton<String>(
                               icon: const Icon(Icons.arrow_drop_down),
                               onSelected: (String newValue) {
@@ -318,6 +329,9 @@ class _RegistrationPageState extends State<RegistrationPage> {
                           decoration: InputDecoration(
                             labelText: 'To Time',
                             icon: const Icon(Icons.watch_later_outlined),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
                             suffixIcon: PopupMenuButton<String>(
                               icon: const Icon(Icons.arrow_drop_down),
                               onSelected: (String newValue) {
@@ -406,7 +420,15 @@ class _RegistrationPageState extends State<RegistrationPage> {
                               _isLoading = false;
                             });
                           }, //_verifyPhoneNumber,
-                          child: Text('Upload Licence'),
+                          style: ElevatedButton.styleFrom(
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(10.0),
+                            ),
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Text('Upload Licence'),
+                          ),
                         ),
                         SizedBox(height: 16),
                       ],
@@ -426,7 +448,15 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         _isLoading = false;
                       });
                     }, //_verifyPhoneNumber,
-                    child: Text('Get OTP'),
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(10.0),
+                      child: Text('Get OTP'),
+                    ),
                   ),
                   SizedBox(height: 16),
                   PinCodeTextField(
@@ -465,17 +495,24 @@ class _RegistrationPageState extends State<RegistrationPage> {
                         _isLoading = false;
                       });
                     }, //_verifyPhoneNumber,
-                    child: Text('Register'),
+                    style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Text('Register'),
+                    ),
                   ),
                 ],
               ),
             ),
           ),
-        ),
-        if(_isLoading)
-          fullScreenLoader(),
-      ],
+          if(_isLoading)
+            fullScreenLoader(),
+        ],
+      ),
     );
   }
 }
-

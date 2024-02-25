@@ -16,18 +16,66 @@ class _ViewAppointmentHistoryState extends State<ViewAppointmentHistory> {
 
   @override
   Widget build(BuildContext context) {
-    return Stack(
-      children: [
-        Scaffold(
-          appBar: AppBar(
-            title: Text('Appointment History'),
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Stack(
+        children: [
+          // Background Image Container
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/bg_color.jpg'), // Change path to your image
+                fit: BoxFit.cover,
+              ),
+            ),
           ),
-          body: _isLoading
-              ? Center(child: CircularProgressIndicator())
-              : _buildAppointmentHistoryList(_appointmentHistory),
-        ),
-        if (_isLoading) fullScreenLoader(), // You can implement this function to show a full-screen loader
-      ],
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 25, left: 25, top: 50),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                    color: Colors.blue,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton( // Hamburger button
+                          icon: Icon(Icons.menu, color: Colors.white),
+                          onPressed: () {
+                            // Handle hamburger button press
+                          },
+                        ),
+                        Text(
+                          'Appointment History',
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: Colors.white,
+                            fontFamily: 'ProtestRiot',
+                          ),
+                        ),
+                        IconButton( // Settings button
+                          icon: Icon(Icons.settings, color: Colors.white),
+                          onPressed: () {
+                            // Handle settings button press
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              Expanded(
+                child: _isLoading
+                    ? Center(child: CircularProgressIndicator())
+                    : _buildAppointmentHistory(),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 
@@ -53,19 +101,27 @@ class _ViewAppointmentHistoryState extends State<ViewAppointmentHistory> {
     });
   }
 
-  Widget _buildAppointmentHistoryList(List<AppointmentHistory> appointments) {
-    if (appointments.isEmpty) {
-      return Center(child: Text('No appointment history available.'));
-    }
-
-    return ListView.builder(
-      itemCount: appointments.length,
+  Widget _buildAppointmentHistory() {
+    return _appointmentHistory.isEmpty
+        ? Center(child: Text('No appointment history available.', style: TextStyle(color: Colors.white)))
+        : ListView.builder(
+      itemCount: _appointmentHistory.length,
       itemBuilder: (context, index) {
-        final appointment = appointments[index];
-        return ListTile(
-          title: Text('Doctor: ${appointment.doctorName}'),
-          subtitle: Text('From: ${appointment.fromTime}, To: ${appointment.toTime}'),
-          // You can display additional information about the appointment here
+        final appointment = _appointmentHistory[index];
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(12),
+            child: Container(
+              padding: EdgeInsets.all(10),
+              color: Colors.purple.withOpacity(0.2), // Adjust opacity here
+              child: ListTile(
+                title: Text('Doctor: ${appointment.doctorName}', style: TextStyle(color: Colors.black)),
+                subtitle: Text('From: ${appointment.fromTime}, To: ${appointment.toTime}', style: TextStyle(color: Colors.black)),
+                // You can display additional information about the appointment here
+              ),
+            ),
+          ),
         );
       },
     );
