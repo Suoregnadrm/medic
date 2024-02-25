@@ -5,20 +5,6 @@ import 'package:provider/provider.dart';
 import 'firebase_function.dart';
 import 'home.dart';
 
-
-// class login_page extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp(
-//       title: 'Login App',
-//       theme: ThemeData(
-//         primarySwatch: Colors.blue,
-//       ),
-//       home: LoginPage(),
-//     );
-//   }
-// }
-
 class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -27,94 +13,97 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _formKey = GlobalKey<FormState>();
   String _phoneNumber = '';
-  //String _password = '';
   TextEditingController otpController = TextEditingController();
-
-
   bool _isLoading = false;
-  // void _navigateToAssessment() {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(builder: (context) => Home()),
-  //   );
-  // }
 
   @override
   Widget build(BuildContext context) {
     final userData = Provider.of<UserData>(context);
-    return Stack(
-      children: [
-        Scaffold(
-          appBar: AppBar(
-            backgroundColor: Colors.blue,
-            title: const Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [Image(
-                image: AssetImage('assets/medicLogo.jpg'),
-                width: 60.0,
-                height: 60.0,
-              ),
-                //Image.asset('assets/logo.jpg', fit: BoxFit.fitWidth), // Replace with your image path
-                Text(
-                  'MEDIC',
-                  style: TextStyle(
-                    fontSize: 32,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.white,
-                  ),
-                ),
-              ],
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Container(
+          height: MediaQuery.of(context).size.height, // Set the height of the container to the screen height
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/bg_color.jpg'), // Replace with your background image
+              fit: BoxFit.cover,
             ),
           ),
-          body: Container(
-            decoration: BoxDecoration(
-              gradient: LinearGradient(
-                begin: Alignment.topCenter,
-                end: Alignment.bottomCenter,
-                colors: [
-                  Colors.blue,
-                  Colors.blueAccent,
-                ],
-              ),
-            ),
-            child: Center(
-              child: SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.all(20.0),
-                  child: Form(
+          child: Center(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 25, left: 25, top: 50),
+              child: Column(
+                //mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Container( // Custom rectangular box
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                    decoration: BoxDecoration(
+                      color: Colors.blue,
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton( // Hamburger button
+                          icon: Icon(Icons.menu, color: Colors.white),
+                          onPressed: () {
+                            // Handle hamburger button press
+                          },
+                        ),
+                        Text(
+                          'LOGIN',
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                            fontFamily: 'ProtestRiot',
+                          ),
+                        ),
+                        IconButton( // Settings button
+                          icon: Icon(Icons.settings, color: Colors.white),
+                          onPressed: () {
+                            // Handle settings button press
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Form(
                     key: _formKey,
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        Text(
-                          'Login',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 40.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 20.0),
-                        Image.asset(
-                          'assets/logo.png', // Replace with your logo
-                          width: 150.0,
-                        ),
-                        SizedBox(height: 40.0),
-                        TextFormField(
-                          decoration: InputDecoration(
-                            hintText: 'Phone Number',
-                            prefixIcon: Icon(Icons.phone),
-                            filled: true,
-                            fillColor: Colors.white,
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10.0),
+                        // Text(
+                        //   'LOGIN',
+                        //   style: TextStyle(
+                        //     fontSize: 38,
+                        //     fontWeight: FontWeight.bold,
+                        //     color: Colors.blueAccent,
+                        //     fontFamily: 'Merriweather-Italic',
+                        //   ),
+                        // ),
+                        SizedBox(height: 120.0),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          child: TextFormField(
+                            decoration: InputDecoration(
+                              hintText: 'Phone Number',
+                              prefixIcon: Icon(Icons.phone),
+                              filled: true,
+                              fillColor: Colors.white,
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15.0), // Adjust the curve as needed
+                              ),
+                              contentPadding: EdgeInsets.symmetric(vertical: 15.0, horizontal: 16.0),
                             ),
+                            validator: (value) => value!.isEmpty ? 'Please enter Phone Number' : null,
+                            onChanged: (value) => _phoneNumber = value,
                           ),
-                          validator: (value) => value!.isEmpty ? 'Please enter email' : null,
-                          onChanged: (value) => _phoneNumber = value,
                         ),
 
-                        SizedBox(height: 16),
+                        SizedBox(height: 40),
                         ElevatedButton(
                           onPressed: () async {
                             FocusScope.of(context).unfocus();
@@ -126,66 +115,78 @@ class _LoginPageState extends State<LoginPage> {
                             setState(() {
                               _isLoading = false;
                             });
-                          }, //_verifyPhoneNumber,
-                          child: Text('Get OTP'),
-                        ),
-                        SizedBox(height: 16),
-                        PinCodeTextField(
-                          appContext: context,
-                          length: 6,
-                          onChanged: (value) {
-                            print(value);
                           },
-                          controller: otpController,
-                          keyboardType: TextInputType.number,
-                          pinTheme: PinTheme(
-                            shape: PinCodeFieldShape.underline,
-                            activeColor: Colors.blue,
-                            inactiveColor: Colors.grey,
-                            selectedColor: Colors.blue,
+                          style: ElevatedButton.styleFrom(
+                            primary: Colors.blue, // Background color
+                            onPrimary: Colors.white, // Text color
+                            padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(15.0), // Adjust the curve as needed
+                            ),
+                            elevation: 4, // Elevation
+                          ),
+                          child: Text(
+                            'Get OTP',
+                            style: TextStyle(fontFamily: 'OldStandardTT', fontSize: 15, fontWeight: FontWeight.w800),
                           ),
                         ),
-                        SizedBox(height: 16),
+                        SizedBox(height: 5),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 40),
+                          child: PinCodeTextField(
+                            appContext: context,
+                            length: 6,
+                            onChanged: (value) {
+                              print(value);
+                            },
+                            controller: otpController,
+                            keyboardType: TextInputType.number,
+                            pinTheme: PinTheme(
+                              shape: PinCodeFieldShape.underline,
+                              activeColor: Colors.blue,
+                              inactiveColor: Colors.grey,
+                              selectedColor: Colors.blue,
+                            ),
+                          ),
+                        ),
+                        SizedBox(height: 40),
                         ElevatedButton(
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
                               setState(() {
                                 _isLoading = true;
                               });
-                              await verifyOTPCodeForLogin(context,userData.verfID,otpController.text);
+                              await verifyOTPCodeForLogin(context, userData.verfID, otpController.text);
                               setState(() {
                                 _isLoading = false;
                               });
                             }
                           },
                           style: ElevatedButton.styleFrom(
-                            padding: EdgeInsets.symmetric(horizontal: 100.0, vertical: 20.0),
+                            primary: Colors.blue, // Background color
+                            onPrimary: Colors.white, // Text color
+                            padding: EdgeInsets.symmetric(horizontal: 30.0, vertical: 8.0),
                             shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10.0),
+                              borderRadius: BorderRadius.circular(15.0), // Border radius
                             ),
+                            elevation: 4, // Elevation
                           ),
                           child: Text(
                             'Login',
-                            style: TextStyle(fontSize: 20.0),
+                            style: TextStyle(fontFamily: 'ProtestRiot', fontSize: 20),
                           ),
                         ),
                       ],
                     ),
                   ),
-                ),
+                ],
               ),
             ),
           ),
         ),
-        if(_isLoading)
-          fullScreenLoader(),
-      ],
+      ),
+      // Extend the body to fullscreen when keyboard is displayed
+      resizeToAvoidBottomInset: true,
     );
   }
 }
-
-
-
-
-
-

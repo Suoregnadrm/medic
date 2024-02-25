@@ -51,22 +51,18 @@ class _MyChatPageState extends State<MyChatPage> {
         _speech.listen(
           onResult: (result) {
             setState(() {
-              //print(result.recognizedWords);
               inputController.text = result.recognizedWords;
             });
           },
           listenFor: Duration(seconds: 15),
-          pauseFor: Duration(seconds: 5),  // Allow pausing after speaking
-          partialResults: true,  // Show partial results as user speaks
-          //onSoundLevelChange: (level) => print('Sound level: $level'),
-          cancelOnError: true,  // Cancel listening on errors
-          listenMode: stt.ListenMode.dictation,  // Optimize for dictation
+          pauseFor: Duration(seconds: 5),
+          partialResults: true,
+          cancelOnError: true,
+          listenMode: stt.ListenMode.dictation,
         ).then((_) {
           setState(() {
             isListening = false;
           });
-          //_addBotMessage(inputController.text);
-          // Send the transcribed text only when listening is complete
           _makePrediction(inputController.text);
         });
       } else {
@@ -78,7 +74,6 @@ class _MyChatPageState extends State<MyChatPage> {
   }
 
   Future<void> _makePrediction(String transcribedText) async {
-    print(transcribedText);
     final String apiUrl = 'http://10.55.17.231:8000';
 
     try {
@@ -94,12 +89,6 @@ class _MyChatPageState extends State<MyChatPage> {
           String output = data['prediction'];
           String output2 = data['prediction2'];
           String output3 = data['prediction3'];
-          // String desc = data['description'];
-          // String speciality = data['speciality'];
-          // String p1 = data['Precaution1'];
-          // String p2 = data['Precaution1'];
-          // String p3 = data['Precaution1'];
-          // String p4 = data['Precaution1'];
           String? desc = data['description'];
           String? speciality = data['speciality'];
           String? p1 = data['precaution1'];
@@ -125,7 +114,7 @@ class _MyChatPageState extends State<MyChatPage> {
             type: ChatMessageType.bot,
           ));
           _speak('Possible disease are $output/$output2/$output3');
-          inputController.clear(); // Clear the input after sending
+          inputController.clear();
           if(desc.isEmpty){
             messages.add(ChatMessage(
               message: 'Please consult a doctor, or rerun the assessment with more symptoms for suggestions!',
@@ -188,64 +177,110 @@ class _MyChatPageState extends State<MyChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Preliminary Assessment'),
-      ),
-      body: Column(
+      backgroundColor: Colors.transparent,
+      body: Stack(
         children: [
-          Expanded(
-            child: ListView.builder(
-              itemCount: messages.length,
-              itemBuilder: (context, index) {
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: ChatMessageWidget(
-                    message: messages[index],
-                    speak: _speak,
-                  ),
-                );
-              },
+          // Background Image Container
+          Container(
+            decoration: BoxDecoration(
+              image: DecorationImage(
+                image: AssetImage('assets/bg_color.jpg'),
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                Expanded(
-                  child: TextField(
-                    controller: inputController,
-                    decoration: const InputDecoration(
-                      hintText: 'Your response',
+          Column(
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(right: 25, left: 25, top: 50),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(15),
+                  child: Container(
+                    width: double.infinity,
+                    padding: EdgeInsets.symmetric(vertical: 5, horizontal: 5),
+                    color: Colors.blue,
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        IconButton(
+                          icon: Icon(Icons.menu, color: Colors.white),
+                          onPressed: () {
+                            // Handle hamburger button press
+                          },
+                        ),
+                        Text(
+                          'Preliminary Assessment',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontFamily: 'ProtestRiot',
+                          ),
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.settings, color: Colors.white),
+                          onPressed: () {
+                            // Handle settings button press
+                          },
+                        ),
+                      ],
                     ),
                   ),
                 ),
-                const SizedBox(width: 10),
-                ElevatedButton.icon(
-                  onPressed: () {
-                    // Initiate listening only when not already listening
-                    if (!isListening) {
-                      _listen();
-                    }
+              ),
+              Expanded(
+                child: ListView.builder(
+                  itemCount: messages.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ChatMessageWidget(
+                        message: messages[index],
+                        speak: _speak,
+                      ),
+                    );
                   },
-                  icon: Icon(
-                    isListening ? Icons.mic_off : Icons.mic,  // Update icon
-                    color: Colors.white,
-                  ),
-                  label: const Text(''),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.blue,
-                    elevation: 5,
-                  ),
                 ),
-                const SizedBox(width: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    _makePrediction(inputController.text); // Send text to API
-                  },
-                  child: const Text('Send'),
+              ),
+              Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        controller: inputController,
+                        decoration: const InputDecoration(
+                          hintText: 'Your response',
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    ElevatedButton.icon(
+                      onPressed: () {
+                        if (!isListening) {
+                          _listen();
+                        }
+                      },
+                      icon: Icon(
+                        isListening ? Icons.mic_off : Icons.mic,
+                        color: Colors.white,
+                      ),
+                      label: const Text(''),
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.blue,
+                        elevation: 5,
+                      ),
+                    ),
+                    const SizedBox(width: 10),
+                    ElevatedButton(
+                      onPressed: () {
+                        _makePrediction(inputController.text);
+                      },
+                      child: const Text('Send'),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
         ],
       ),

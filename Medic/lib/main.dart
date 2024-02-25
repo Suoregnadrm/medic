@@ -9,7 +9,7 @@ import 'firebase_options.dart';
 import 'dart:async';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:speech_to_text/speech_to_text.dart' as stt;
-
+import 'package:google_fonts/google_fonts.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +23,7 @@ void main() {
         ChangeNotifierProvider<DoctorsProvider>(create: (_)=> DoctorsProvider(),),
         ChangeNotifierProvider<AppointmentsProvider>(create: (_)=> AppointmentsProvider(),),
       ],
-      child: const MaterialApp(
+      child: MaterialApp(
         title: "Medic",
         home: MyApp(),
       ),
@@ -165,113 +165,162 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        appBar: AppBar(
-          backgroundColor: Colors.blue,
-          title: const Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [Image(
-              image: AssetImage('assets/medicLogo.jpg'),
-              width: 60.0,
-              height: 60.0,
+        body: Container(
+          decoration: BoxDecoration(
+            image: DecorationImage(
+              image: AssetImage('assets/bg_color.jpg'),
+              fit: BoxFit.cover,
             ),
-              //Image.asset('assets/logo.jpg', fit: BoxFit.fitWidth), // Replace with your image path
-              Text(
-                'MEDIC',
-                style: TextStyle(
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white,
-                ),
-              ),
-            ],
           ),
-        ),
-        body: SafeArea(
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                const SizedBox(height: 10),
-                const Text(
-                  'Welcome to\nMEDIC',
-                  textAlign: TextAlign.center,
-                  style: TextStyle(fontSize: 24),
-                ),
-                const SizedBox(height: 20),
-                const Text('Let your voice assist you...!'),
-                const SizedBox(height: 20),
-                const Text('Let\'s Get Started....'),
-                const SizedBox(height: 40),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Expanded(
-                      child: ElevatedButton(
-                        onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context)=>RegistrationPage()
-                              ));
-                        },
-                        child: const Text('Register'),
+          child: SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Logo with rounded corners and transparency
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(25.0),
+                    child: ColorFiltered(
+                      colorFilter: ColorFilter.mode(Colors.transparent, BlendMode.multiply),
+                      child: Image.asset(
+                        'assets/parthaLogo.png',
+                        width: 120.0,
+                        height: 120.0,
                       ),
                     ),
-                    const SizedBox(width: 20),
-                    Expanded(
-                      child: ElevatedButton(
+                  ),
+                  //const SizedBox(height: 10),
+                  // Rest of the content...
+
+                  // const Text(
+                  //   'WELCOME TO',
+                  //   //style: TextStyle(fontFamily: 'PlayfairDisplay-VariableFont_wght', fontSize: 27),
+                  //   style: TextStyle(fontFamily: 'Quicksand-VariableFont_wght', fontSize: 27),
+                  //   textAlign: TextAlign.center,
+                  // ),
+                  // const SizedBox(height: 10),
+                  // const Text(
+                  //   'MEDIC',
+                  //   style: TextStyle(fontSize: 27, fontFamily: 'Merriweather'),
+                  //   //style: TextStyle(fontFamily: 'AlfaSlabOne', fontSize: 28),
+                  //   textAlign: TextAlign.center,
+                  // ),
+                  const SizedBox(height: 40),
+                  Text(
+                    'Let your voice assist you..!',
+                    style: TextStyle(fontFamily: 'OldStandardTT',
+                        fontSize: 15,
+                        color: Colors.black87,
+                        fontWeight: FontWeight.w600),
+                  ),
+                  const SizedBox(height: 10),
+                  const Text('Let\'s Get Started..!',
+                      style: TextStyle(fontFamily: 'Merriweather-Italic', fontSize: 14, color: Colors.black87, fontWeight: FontWeight.w300,
+                      )
+                  ),
+                  const SizedBox(height: 40),
+                  Center(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context)=>LoginPage()
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(15), // Adjust the value as needed
+                        ),
+                        padding: EdgeInsets.symmetric(vertical: 12, horizontal: 100), // Adjust the padding as needed
+                        minimumSize: Size(200, 0), // Adjust the minimum size as needed
+                      ),
+                      child: Text(
+                        'Login',
+                          style: TextStyle(fontFamily: 'Merriweather-Italic', fontSize: 14)
+                      ),
+                    ),
+                  ),
+
+                  const SizedBox(height: 20),
+                  //Mic button
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.only(right: 0.0), // Adjust the value as needed
+                        child: TextButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context)=>const VoiceLoginPage()
+                              ),
+                            );
+                          },
+                          child: const Icon(Icons.mic),
+                        ),
+                      ),
+                      const Text('Say ',
+                          style: TextStyle(fontFamily: 'Merriweather-Italic', fontSize: 13.5,
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w500)
+                      ),
+                      const Text('"Hello" ',
+                          style: TextStyle(fontFamily: 'ProtestRiot', fontSize: 13.5,
+                              color: Colors.blueAccent,
+                              fontWeight: FontWeight.w500)
+                      ),
+                      const Text('to start voice assistance',
+                          style: TextStyle(fontFamily: 'Merriweather-Italic', fontSize: 13.5,
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w500)
+                      ),
+                    ],
+                  ),
+
+                  const SizedBox(height: 5),
+                  // Already have an account text and Register button
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      const Text('Create new account?',
+                          style: TextStyle(fontFamily: 'Merriweather-Italic', fontSize: 14,
+                              color: Colors.black87,
+                              fontWeight: FontWeight.w500)
+                      ),
+                      const SizedBox(width: 10),
+                      ElevatedButton(
                         onPressed: () {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context)=>LoginPage()
+                                builder: (context)=>RegistrationPage()
                             ),
                           );
                         },
-                        child: const Text('Login'),
+                        style: ElevatedButton.styleFrom(
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15), // Adjust the radius as needed
+                          ),
+                          padding: EdgeInsets.symmetric(vertical: 12, horizontal: 24), // Adjust the padding as needed
+                        ),
+                        child: Text(
+                          'Register',
+                          style: TextStyle(
+                            fontFamily: 'Merriweather-Italic',
+                            fontSize: 14, // Adjust the font size as needed
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 20),
-                //Mic button
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const SizedBox(width: 10),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context)=>const VoiceLoginPage()
-                            ));
-                      },
-                      child: const Icon(Icons.mic),
-                    ),
-                    const Text('Say "Hello" to start voice assistance'),
-                  ],
-                ),
-                // Already have an account text and Login button
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Text('Already have an account?'),
-                    const SizedBox(width: 10),
-                    TextButton(
-                      onPressed: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context)=>LoginPage()
-                            ));
-                      },
-                      child: const Text('Login'),
-                    ),
-                  ],
-                ),
-              ],
+
+                    ],
+                  ),
+
+                ],
+              ),
             ),
           ),
         ),
