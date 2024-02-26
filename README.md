@@ -13,7 +13,7 @@
 	<li> To open the admin dashboard, open <code>CMD</code> and navigate to the <code>admin</code> folder downloaded in the repo.</li>
 	<li> Run <code>http-server</code> and click on any given URL.</li>
 	<li> <i>If <code>http-server</code> is not installed you can install it using <code>npm install -g http-server</code>.<br> Additionally if you get any firebase error, run <code>npm install firebase@9.6.0</code></i></li>
- 	<li> Open the <code>admin_login.html</code> file to view the admin dashboard.</li>
+ 	<li> Open the <code>admin_login.html</code> file to view the admin dashboard.<br><i>username: admin, password: admin</i></li>
 		
 </ul>
 
